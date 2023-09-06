@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Musium</string>
+    <string name="release">Release date</string>
+    <string name="search_content">Search</string>
+    <string name="search_btn">Search</string>
+    <string name="input_description">Enter song name</string>
+    <string name="singer">Artist</string>
+    <string name="lyrics_btn">Lyrics</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_lyrics_fragment">Lyrics Fragment</string>
+    <string name="hello_Detail_fragment">Details Fragment</string>
+    <string name="action_search">Search</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transperant">#00FFFFFF</color>
+    <color name="shimmer_placeholder">#dddddd</color>
+    <color name="search_bar">#C4E4F7</color>
+    <color name="my_primary">#D6F1FF</color>
+    <color name="colorPrimaryDark">#056AA1</color>
+    <color name="color_Accent">#470E0E</color>
+</resources>
