@@ -1,4 +1,4 @@
-package com.example.musicapp.home
+package com.example.musicapp.home.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.musicapp.R
-import com.example.musicapp.model_data.Hit
+import com.example.musicapp.model_data.song_details.Hit
 
 class DetailFragment : Fragment() {
 

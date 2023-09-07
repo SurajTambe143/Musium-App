@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.musicapp.R
 import com.example.musicapp.api_call.MusicApi
-import com.example.musicapp.model_data.LyricsResponse
+import com.example.musicapp.model_data.lyrics.LyricsResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call

@@ -10,7 +10,7 @@
     <style name="Theme.MusicApp" parent="Base.Theme.MusicApp" />
     <style name="corner_radius" parent="Base.Theme.MusicApp">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">20%</item>
+        <item name="cornerSize">10%</item>
     </style>
 
     <style name="bottom_corner" parent="Base.Theme.MusicApp">

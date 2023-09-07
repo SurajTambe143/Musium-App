@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".home.DetailsActivity"
+            android:name=".home.activity.DetailsActivity"
             android:exported="false" />
         <activity
             android:name=".home.LyricsActivity"
@@ -26,7 +26,7 @@
             android:name=".home.DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".home.MainActivity"
+            android:name=".home.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

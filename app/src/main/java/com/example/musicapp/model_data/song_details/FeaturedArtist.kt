@@ -1,15 +1,15 @@
-package com.example.musicapp.model_data
+package com.example.musicapp.model_data.song_details
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class PrimaryArtist(
+data class FeaturedArtist(
     val _type: String,
     val api_path: String,
     val header_image_url: String,
     val id: Int,
-    val image_url: String?="",
+    val image_url: String,
     val index_character: String,
     val iq: Int,
     val is_meme_verified: Boolean,

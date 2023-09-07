@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.musicapp.R
-import com.example.musicapp.model_data.Hit
+import com.example.musicapp.model_data.song_details.Hit
 
 class SongsAdapter(val onClick: (Hit) -> Unit) :
     RecyclerView.Adapter<SongsAdapter.MyViewHolder>() {

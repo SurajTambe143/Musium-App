@@ -9,7 +9,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.musicapp.R
-import com.example.musicapp.model_data.Hit
+import com.example.musicapp.home.activity.MainActivity
+import com.example.musicapp.model_data.song_details.Hit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +19,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-        val song:Hit?=intent.getParcelableExtra("songDetail")
+        val song: Hit?=intent.getParcelableExtra("songDetail")
 
         val imageTitle=findViewById<ImageView>(R.id.detail_title_image)
         val imageTitleBg=findViewById<ImageView>(R.id.detail_title_image_bg)
@@ -35,7 +36,7 @@ class DetailActivity : AppCompatActivity() {
         releaseDate.text=song?.result?.release_date_for_display
 
         findViewById<ImageButton>(R.id.back_image_btn).setOnClickListener {
-            val intent=Intent(this,MainActivity::class.java)
+            val intent=Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 

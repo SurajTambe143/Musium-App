@@ -1,7 +1,7 @@
 package com.example.musicapp.api_call
 
-import com.example.musicapp.model_data.DetailsResponse
-import com.example.musicapp.model_data.LyricsResponse
+import com.example.musicapp.model_data.lyrics.LyricsResponse
+import com.example.musicapp.model_data.song_details.DetailsResponse
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

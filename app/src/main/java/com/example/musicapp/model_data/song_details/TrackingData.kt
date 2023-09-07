@@ -1,4 +1,4 @@
-package com.example.musicapp.model_data
+package com.example.musicapp.model_data.song_details
 
 data class TrackingData(
     val annotatable_id: Int,
