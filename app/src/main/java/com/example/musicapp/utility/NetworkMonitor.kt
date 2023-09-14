@@ -47,24 +47,11 @@ class NetworkMonitor(private val context: Context, val online: () -> Unit) {
 
             connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
         } else {
-            // For older Android versions, you can use other methods to monitor connectivity
-            // such as BroadcastReceiver.
         }
     }
 
     fun stopNetworkMonitoring() {
         connectivityManager.unregisterNetworkCallback(networkCallback)
     }
-
-//    companion object {
-//        @Volatile
-//        private var instance: NetworkMonitor? = null
-//
-//        fun getInstance(context: Context): NetworkMonitor {
-//            return instance ?: synchronized(this) {
-//                instance ?: NetworkMonitor(context).also { instance = it }
-//            }
-//        }
-//    }
 
 }
