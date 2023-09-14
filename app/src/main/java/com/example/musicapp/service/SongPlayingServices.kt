@@ -90,6 +90,7 @@ class SongPlayingServices : Service() {
     }
 
     override fun onDestroy() {
+        stopSelf()
 //        Log.e("S", "onDestroy:")
 //        mp?.stop()
     }

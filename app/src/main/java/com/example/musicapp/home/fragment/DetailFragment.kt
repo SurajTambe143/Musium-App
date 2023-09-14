@@ -29,6 +29,7 @@ import com.example.musicapp.service.SongPlayingServices
 import com.example.musicapp.utility.SongDurationFormator
 import com.example.musicapp.viewmodel.ShazamViewModel
 import com.example.musicapp.viewmodel.ShazamViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 
 class DetailFragment : Fragment(), ServiceConnection {
 
@@ -36,8 +37,8 @@ class DetailFragment : Fragment(), ServiceConnection {
     private val binding get() = _binding!!
     var playUri: String? = ""
     var songPlayingServices: SongPlayingServices? = null
-    var songList:Hit?=null
-    var shazamSongList:ShazamSongResponse?=null
+    var songList: Hit? = null
+    var shazamSongList: ShazamSongResponse? = null
     lateinit var shazamViewModel: ShazamViewModel
 
     override fun onCreateView(
@@ -50,7 +51,7 @@ class DetailFragment : Fragment(), ServiceConnection {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        songList= arguments?.getParcelable("songDetail")
+        songList = arguments?.getParcelable("songDetail")
         songPlayingServices?.setMusicList(songList)
         setUI(songList)
         shazamViewModelInit()
@@ -74,57 +75,65 @@ class DetailFragment : Fragment(), ServiceConnection {
         Glide.with(requireContext()).load(songList?.result?.song_art_image_url)
             .into(binding.detailsTitleImageBg)
         binding.detailsTitle.text = songList?.result?.title
-//        Glide.with(requireContext()).load(songList?.result?.primary_artist?.image_url)
-//            .into(binding.detailsArtistImage)
         binding.detailsArtist.text = songList?.result?.artist_names
         binding.detailsReleaseDate.text = songList?.result?.release_date_for_display
     }
 
     private fun controlSound(song: String?) {
         try {
-            val uri: Uri?= Uri.parse(song.toString())
-            if (songPlayingServices!!.mp==null)  songPlayingServices!!.mp = MediaPlayer()
-            songPlayingServices!!.mp = MediaPlayer.create(requireActivity(),uri)
-            binding.seekBar.progress=0
-            binding.seekBar.max= songPlayingServices!!.mp!!.duration
-            binding.seekBarDurationStart.text=SongDurationFormator.formatDuration(songPlayingServices!!.mp!!.currentPosition.toLong())
-            binding.seekBarDurationEnd.text=SongDurationFormator.formatDuration(songPlayingServices!!.mp!!.duration.toLong())
+            val uri: Uri? = Uri.parse(song.toString())
+            if (songPlayingServices!!.mp == null) {
+                songPlayingServices!!.mp = MediaPlayer()
+                songPlayingServices!!.mp = MediaPlayer.create(requireActivity(), uri)
+                binding.playProgressBar.visibility=View.GONE
+                binding.seekBar.progress = 0
+                binding.seekBar.max = songPlayingServices!!.mp!!.duration
+                binding.seekBarDurationStart.text =
+                    SongDurationFormator.formatDuration(songPlayingServices!!.mp!!.currentPosition.toLong())
+                binding.seekBarDurationEnd.text =
+                    SongDurationFormator.formatDuration(songPlayingServices!!.mp!!.duration.toLong())
 
-            binding.play.setOnClickListener {
-//            var intent = Intent(requireActivity(), SongPlayingServices::class.java)
-//            intent.putExtra("Shazam", song)
-//            requireActivity().bindService(intent, this@DetailFragment,Context.BIND_AUTO_CREATE)
-//            requireActivity().startService(intent)
-                songPlayingServices!!.mp?.start()
-                songPlayingServices!!.showNotification()
-            }
-            binding.stop.setOnClickListener {
-//            var intent = Intent(requireActivity(), SongPlayingServices::class.java)
-//            requireActivity().stopService(intent)
-                songPlayingServices!!.mp?.stop()
-                songPlayingServices!!.mp?.release()
-                NotificationManagerCompat.from(requireContext()).cancel(122)
-                binding.playSlant.visibility=View.VISIBLE
-                binding.pauseSlant.visibility=View.VISIBLE
-                binding.stopSlant.visibility=View.VISIBLE
-            }
-            binding.pause.setOnClickListener {
-                songPlayingServices!!.mp?.pause()
-            }
-            binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
-                override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                    if (p2) songPlayingServices!!.mp?.seekTo(p1)
+                binding.play.setOnClickListener {
+                    songPlayingServices!!.mp?.start()
+                    songPlayingServices!!.showNotification()
                 }
-                override fun onStartTrackingTouch(p0: SeekBar?) =Unit
+                binding.stop.setOnClickListener {
+                    if (songPlayingServices?.mp != null) {
+                        songPlayingServices!!.mp?.stop()
+                        songPlayingServices!!.mp?.release()
+                        NotificationManagerCompat.from(requireContext()).cancel(122)
+                        binding.playSlant.visibility = View.VISIBLE
+                        binding.pauseSlant.visibility = View.VISIBLE
+                        binding.stopSlant.visibility = View.VISIBLE
+                        val intent = Intent(requireActivity(), SongPlayingServices::class.java)
+                        requireActivity().bindService(
+                            intent,
+                            this@DetailFragment,
+                            Context.BIND_AUTO_CREATE
+                        )
+                        requireActivity().stopService(intent)
+                    }
+                }
+                binding.pause.setOnClickListener {
+                    if (songPlayingServices?.mp != null) {
+                        songPlayingServices!!.mp?.pause()
+                    }
+                }
+                binding.seekBar.setOnSeekBarChangeListener(object :
+                    SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                        if (p2)
+                            if (songPlayingServices?.mp != null) songPlayingServices!!.mp?.seekTo(p1)
+                    }
 
-                override fun onStopTrackingTouch(p0: SeekBar?) = Unit
-            })
+                    override fun onStartTrackingTouch(p0: SeekBar?) = Unit
 
-        }catch (e:Exception){
+                    override fun onStopTrackingTouch(p0: SeekBar?) = Unit
+                })
+            }
+
+        } catch (e: Exception) {
             return
-        }
-        fun myey(){
-
         }
     }
 
@@ -138,7 +147,7 @@ class DetailFragment : Fragment(), ServiceConnection {
         songPlayingServices = null
     }
 
-    fun shazamViewModelInit(){
+    fun shazamViewModelInit() {
 
         val shazamSongService =
             RetrofitHelper.getInstanceOfShazamApi().create(ShazamSongService::class.java)
@@ -152,14 +161,19 @@ class DetailFragment : Fragment(), ServiceConnection {
                 is APIResponse.Loading -> {}
                 is APIResponse.Success -> {
                     it.data.let {
-                        shazamSongList=it
+                        shazamSongList = it
                         Log.e("Shazam Success", it.toString())
                         songPlayingServices?.setMusicList(songList)
                         playUri = it?.tracks?.hits?.get(0)?.track?.hub?.actions?.get(1)?.uri
                         controlSound(playUri)
                     }
                 }
-                is APIResponse.Error -> {}
+
+                is APIResponse.Error -> {
+                    it.errorMessage.let {
+                        Snackbar.make(binding.root,it.toString(),Snackbar.LENGTH_SHORT).show()
+                    }
+                }
             }
         })
 
@@ -167,6 +181,7 @@ class DetailFragment : Fragment(), ServiceConnection {
 
     override fun onDestroy() {
         super.onDestroy()
+        NotificationManagerCompat.from(requireContext()).cancel(122)
         _binding = null
     }
 

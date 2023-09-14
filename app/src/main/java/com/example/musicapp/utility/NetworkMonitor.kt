@@ -6,9 +6,10 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
-import android.widget.Toast
+import com.example.musicapp.databinding.ActivityMainBinding
+import com.google.android.material.snackbar.Snackbar
 
-class NetworkMonitor(private val context: Context, val online: () -> Unit) {
+class NetworkMonitor(private val context: Context, binding: ActivityMainBinding, val online: () -> Unit) {
 
     private var currentNetworkStatus = NetworkStatus.INITIAL
     private val connectivityManager: ConnectivityManager =
@@ -20,17 +21,17 @@ class NetworkMonitor(private val context: Context, val online: () -> Unit) {
 
             val networkStatus = NetworkCheck.isOnline(context)
             if (!(currentNetworkStatus == NetworkStatus.INITIAL && networkStatus)) {
-                Toast.makeText(context, "Online", Toast.LENGTH_SHORT).show()
                 // Handle network available event
                 online.invoke()
+                Snackbar.make(binding.clMainActivityRoot,"Network available",Snackbar.LENGTH_SHORT).show()
                 currentNetworkStatus=NetworkStatus.ONLINE
             }
         }
 
         override fun onLost(network: Network) {
             super.onLost(network)
+            Snackbar.make(binding.clMainActivityRoot,"You are Offline",Snackbar.LENGTH_SHORT).show()
             // Handle network lost event
-            Toast.makeText(context, "Network lost", Toast.LENGTH_SHORT).show()
             currentNetworkStatus=NetworkStatus.OFFLINE
         }
     }
@@ -46,7 +47,6 @@ class NetworkMonitor(private val context: Context, val online: () -> Unit) {
                 .build()
 
             connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
-        } else {
         }
     }
 

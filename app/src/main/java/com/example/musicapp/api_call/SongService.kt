@@ -23,3 +23,4 @@ interface SongService {
     @GET("song/lyrics/")
     suspend fun getSongLyrics(@Query("id") id:Int?, @Query("text_format") text_format:String?): Response<LyricsResponse>
 }
+//dec3972ccfmsh0ab9c5962377bb0p115879jsn8b9953306098

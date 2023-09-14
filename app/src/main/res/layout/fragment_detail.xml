@@ -223,8 +223,8 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/round_play"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/pause"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/pause"
+                    app:layout_constraintEnd_toStartOf="@+id/stop"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
@@ -236,9 +236,21 @@
                     android:src="@drawable/ic_slash_forward"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/pause"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@+id/pause"
+                    app:layout_constraintEnd_toStartOf="@+id/stop"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ProgressBar
+                    android:id="@+id/play_progress_bar"
+                    android:layout_width="50dp"
+                    android:layout_height="0dp"
+                    android:background="@color/transperant"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/pause"
+                    app:layout_constraintEnd_toStartOf="@+id/stop"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
 
                 <ImageButton
                     android:id="@+id/pause"
@@ -248,8 +260,8 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/round_pause_24"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/stop"
-                    app:layout_constraintStart_toEndOf="@id/play"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/play"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
@@ -261,9 +273,9 @@
                     android:src="@drawable/ic_slash_forward"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/stop"
-                    app:layout_constraintStart_toEndOf="@id/play"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/play"
+                    app:layout_constraintTop_toTopOf="parent"  />
 
                 <ImageButton
                     android:id="@+id/stop"
@@ -274,7 +286,7 @@
                     android:src="@drawable/round_stop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/pause"
+                    app:layout_constraintStart_toEndOf="@id/play"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
@@ -287,8 +299,8 @@
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/pause"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@id/play"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

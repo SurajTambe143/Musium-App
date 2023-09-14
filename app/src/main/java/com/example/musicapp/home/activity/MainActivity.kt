@@ -42,7 +42,12 @@ class MainActivity : AppCompatActivity() {
         //Tool Bar
         setSupportActionBar(binding.myToolbar)
 
+
         setUpRecyclerViews()
+        networkMonitor = NetworkMonitor(this,binding) {
+            mainViewModel.getSongDetails("Perfect")
+        }
+        networkMonitor.resetStatus()
 
         setUpViewModelObservers()
 
@@ -86,9 +91,6 @@ class MainActivity : AppCompatActivity() {
         mainViewModel =
             ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
 
-        networkMonitor = NetworkMonitor(this) {
-            mainViewModel.getSongDetails("Perfect")
-        }
 
         mainViewModel.songs.observe(this, Observer {
 
