@@ -6,6 +6,7 @@
     <color name="shimmer_placeholder">#dddddd</color>
     <color name="search_bar">#C4E4F7</color>
     <color name="my_primary">#373737</color>
+    <color name="light_bg">#373737</color>
     <color name="colorPrimaryDark">#3A110E</color>
     <color name="color_Accent">#C4E4F7</color>
 </resources>

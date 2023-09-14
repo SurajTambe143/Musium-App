@@ -11,11 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: SongRepository): ViewModel() {
-    private var vm_q:String=""
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.getSongDetails(vm_q)
-        }
+        getSongDetails("Perfect")
     }
 
     val songs:LiveData<APIResponse<DetailsResponse>>
@@ -24,12 +21,10 @@ class MainViewModel(private val repository: SongRepository): ViewModel() {
     val lyrics:LiveData<APIResponse<LyricsResponse>>
         get() = repository.lyrics
 
-    fun setQuerry(q:String){
-        vm_q=q
-    }
-    fun getSongDetails(){
+
+    fun getSongDetails(queryName:String){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getSongDetails(vm_q)
+            repository.getSongDetails(queryName)
         }
     }
 
@@ -38,4 +33,6 @@ class MainViewModel(private val repository: SongRepository): ViewModel() {
             repository.getSongLyrics(id)
         }
     }
+
+
 }

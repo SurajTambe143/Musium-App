@@ -9,25 +9,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.musicapp.R
 import com.example.musicapp.adapter.SongsAdapter
 import com.example.musicapp.api_call.RetrofitHelper
 import com.example.musicapp.api_call.SongService
+import com.example.musicapp.databinding.ActivityMainBinding
 import com.example.musicapp.repository.APIResponse
 import com.example.musicapp.repository.SongRepository
-import com.example.musicapp.utility.NetworkCheck
+import com.example.musicapp.utility.NetworkMonitor
 import com.example.musicapp.viewmodel.MainViewModel
 import com.example.musicapp.viewmodel.MainViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
-    lateinit var rv:RecyclerView
-    lateinit var rv2:RecyclerView
     lateinit var rootView: View
-    lateinit var shimmerView: View
     lateinit var mainViewModel: MainViewModel
+    private lateinit var networkMonitor: NetworkMonitor
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
     private val songsAdapter = SongsAdapter {
+        networkMonitor.resetStatus()
         val intent = Intent(this, DetailsActivity::class.java)
         intent.putExtra("songDetail", it)
         startActivity(intent)
@@ -35,41 +36,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.my_toolbar))
-        rootView=findViewById(R.id.cl_main_activity_root)
-        shimmerView=findViewById(R.id.shimmer_view_container)
-        rv = findViewById(R.id.rv_container)
-        rv.layoutManager = LinearLayoutManager(this@MainActivity)
-        rv.adapter = songsAdapter
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val songService= RetrofitHelper.getInstance().create(SongService::class.java)
-        val repository = SongRepository(songService,applicationContext)
-        mainViewModel= ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
-        mainViewModel.setQuerry("Hit")
-        mainViewModel.songs.observe(this, Observer {
+        //Tool Bar
+        setSupportActionBar(binding.myToolbar)
 
-            when(it){
-                is APIResponse.Loading-> {
-                    shimmerView.visibility=View.VISIBLE
-                }
-                is APIResponse.Success->{
-                    it.data?.let {
-                        songsAdapter.updateList(it.hits)
-                        shimmerView.visibility=View.GONE
-                    }
-                }
-                is APIResponse.Error->{
-                    Snackbar.make(rootView,"Some Error Occured",Snackbar.LENGTH_LONG).show()
-                    shimmerView.visibility=View.GONE
-                }
-            }
-        })
+        setUpRecyclerViews()
 
-        var networkCheck=NetworkCheck()
-
-        if(!networkCheck.isOnline(applicationContext))Snackbar.make(rootView,"Offline ",Snackbar.LENGTH_LONG).show()
-
+        setUpViewModelObservers()
 
 //        val searchView=findViewById<com.google.android.material.search.SearchView>(R.id.search_view)
 //
@@ -93,7 +68,62 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        }
 //        )
-        
+
+    }
+
+    private fun setUpRecyclerViews() {
+        rootView = binding.clMainActivityRoot
+        binding.rvContainer.layoutManager = LinearLayoutManager(this@MainActivity)
+        binding.rvContainer.adapter = songsAdapter
+    }
+
+    private fun setUpViewModelObservers() {
+
+        //Retrofit Instance
+        val songService = RetrofitHelper.getInstance().create(SongService::class.java)
+        val repository = SongRepository(songService, applicationContext)
+
+        mainViewModel =
+            ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
+
+        networkMonitor = NetworkMonitor(this) {
+            mainViewModel.getSongDetails("Perfect")
+        }
+
+        mainViewModel.songs.observe(this, Observer {
+
+            when (it) {
+                is APIResponse.Loading -> {
+                    binding.shimmerViewContainer.visibility = View.VISIBLE
+                }
+
+                is APIResponse.Success -> {
+                    it.data?.let {
+                        songsAdapter.updateList(it.hits)
+                        binding.shimmerViewContainer.visibility = View.GONE
+                    }
+                }
+
+                is APIResponse.Error -> {
+                    it.errorMessage?.let {
+                        Snackbar.make(binding.clMainActivityRoot, it, Snackbar.LENGTH_LONG).show()
+                        binding.shimmerViewContainer.visibility = View.GONE
+                    }
+                }
+            }
+        })
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        networkMonitor.startNetworkMonitoring()
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        networkMonitor.stopNetworkMonitoring()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -102,16 +132,15 @@ class MainActivity : AppCompatActivity() {
         val searchItem = menu?.findItem(R.id.action_search)
         val searchView = searchItem?.actionView as androidx.appcompat.widget.SearchView
 
-        searchView.setOnQueryTextListener(object: androidx.appcompat.widget.SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Log.d("ex", "onQueryTextSubmit: $query")
-                val ex=query.toString()
-                if (ex==""){
-                Snackbar.make(rootView,"Please enter something",Snackbar.LENGTH_LONG).show()
-                }
-                else{
-                    mainViewModel.setQuerry(ex)
-                    mainViewModel.getSongDetails()
+                val ex = query.toString()
+                if (ex == "") {
+                    Snackbar.make(rootView, "Please enter something", Snackbar.LENGTH_LONG).show()
+                } else {
+                    mainViewModel.getSongDetails(ex)
                 }
                 return false
             }
@@ -123,5 +152,10 @@ class MainActivity : AppCompatActivity() {
         })
         // Configure the search info and add any event listeners.
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

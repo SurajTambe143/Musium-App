@@ -1,7 +1,6 @@
 package com.example.musicapp.repository
 
 import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.musicapp.api_call.SongService
@@ -10,8 +9,6 @@ import com.example.musicapp.model_data.song_details.DetailsResponse
 import com.example.musicapp.utility.NetworkCheck
 
 class SongRepository(private val songService: SongService, val context: Context) {
-
-    var networkCheck= NetworkCheck() 
 
     private val songLiveData = MutableLiveData<APIResponse<DetailsResponse>>()
 
@@ -24,23 +21,26 @@ class SongRepository(private val songService: SongService, val context: Context)
         get() = lyricLiveData
 
     suspend fun getSongDetails(q: String) {
-        if (networkCheck.isOnline(context)){
+        if (NetworkCheck.isOnline(context)){
             val result = songService.getSongDetails(q)
             if (result.body() != null) {
                 songLiveData.postValue(APIResponse.Success(result.body()))
+            }else{
+                songLiveData.postValue(APIResponse.Error("Error occurred while fetching song"))
             }
-        }else
-            Toast.makeText(context,"Offline",Toast.LENGTH_LONG).show()
+        }
 
     }
     suspend fun getSongLyrics(id:Int?){
-        if (networkCheck.isOnline(context)){
+        if (NetworkCheck.isOnline(context)){
             val result = songService.getSongLyrics(id,"plain")
             if (result.body() != null) {
                 lyricLiveData.postValue(APIResponse.Success(result.body()))
+            }else{
+                songLiveData.postValue(APIResponse.Error("Error occurred while fetching lyrics"))
             }
-        }else
-            Toast.makeText(context,"Offline",Toast.LENGTH_LONG).show()
+
+        }
     }
 
 }
