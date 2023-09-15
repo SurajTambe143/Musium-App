@@ -6,6 +6,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
+import android.view.View
 import com.example.musicapp.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -31,6 +32,7 @@ class NetworkMonitor(private val context: Context, binding: ActivityMainBinding,
         override fun onLost(network: Network) {
             super.onLost(network)
             Snackbar.make(binding.clMainActivityRoot,"You are Offline",Snackbar.LENGTH_SHORT).show()
+            binding.shimmerViewContainer.visibility= View.GONE
             // Handle network lost event
             currentNetworkStatus=NetworkStatus.OFFLINE
         }

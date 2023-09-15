@@ -1,11 +1,13 @@
 package com.example.musicapp.home.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.musicapp.adapter.ViewPagerAdapter
 import com.example.musicapp.databinding.ActivityDetailsBinding
 import com.example.musicapp.model_data.song_details.Hit
+import com.example.musicapp.service.SongPlayingServices
 import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailsActivity : AppCompatActivity() {
@@ -32,7 +34,7 @@ class DetailsActivity : AppCompatActivity() {
         binding.viewPager.adapter = adapter
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "Details"
+                0 -> tab.text = "Music"
                 1 -> tab.text = "Lyrics"
             }
         }.attach()
@@ -42,5 +44,7 @@ class DetailsActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding=null
+        val intent = Intent(this, SongPlayingServices::class.java)
+        stopService(intent)
     }
 }

@@ -105,13 +105,6 @@ class DetailFragment : Fragment(), ServiceConnection {
                         binding.playSlant.visibility = View.VISIBLE
                         binding.pauseSlant.visibility = View.VISIBLE
                         binding.stopSlant.visibility = View.VISIBLE
-                        val intent = Intent(requireActivity(), SongPlayingServices::class.java)
-                        requireActivity().bindService(
-                            intent,
-                            this@DetailFragment,
-                            Context.BIND_AUTO_CREATE
-                        )
-                        requireActivity().stopService(intent)
                     }
                 }
                 binding.pause.setOnClickListener {
