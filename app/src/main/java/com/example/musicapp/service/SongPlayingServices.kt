@@ -15,6 +15,7 @@ class SongPlayingServices : Service() {
 
     var mp: MediaPlayer? = null
     private var myBinder = MyBinder()
+    val TAG:String="Service"
 
     companion object {
         val CHANNEL_ID = "1"
@@ -25,11 +26,12 @@ class SongPlayingServices : Service() {
     private var songList: com.example.musicapp.model_data.song_details.Hit? = null
 
     fun setMusicList(data : com.example.musicapp.model_data.song_details.Hit?) {
-        Log.e("Service list", data.toString() )
+        Log.e("Service list :setMusicList method", data.toString() )
         songList = data
     }
 
     override fun onBind(p0: Intent?): IBinder {
+        Log.e(TAG, "onBind: is called of service", )
         return myBinder
     }
 
@@ -40,6 +42,7 @@ class SongPlayingServices : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.e(TAG, "onStartCommand: is called of Service", )
 
 //        val play:String? =intent?.getStringExtra("Shazam")
 //        Log.e("Service Check", play.toString() )
@@ -54,11 +57,11 @@ class SongPlayingServices : Service() {
 
     fun notificationChannelInit() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
         }
     }
 
     fun showNotification() {
+        Log.e(TAG, "showNotification: is called of Service", )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Log.e("songlist notification", songList.toString())
 
@@ -90,6 +93,7 @@ class SongPlayingServices : Service() {
     }
 
     override fun onDestroy() {
+        Log.e(TAG, "onDestroy: is called of Service", )
         stopSelf()
 //        Log.e("S", "onDestroy:")
 //        mp?.stop()

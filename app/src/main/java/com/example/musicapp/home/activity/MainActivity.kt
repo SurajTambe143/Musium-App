@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("ex", "onQueryTextSubmit: $query")
                 val ex = query.toString()
                 if (ex == "") {
-                    Snackbar.make(rootView, "Please enter something", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(binding.clMainActivityRoot, "Please enter something", Snackbar.LENGTH_LONG).show()
                 } else {
                     mainViewModel.getSongDetails(ex)
                 }

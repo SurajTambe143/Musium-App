@@ -40,6 +40,7 @@ class DetailFragment : Fragment(), ServiceConnection {
     var songList: Hit? = null
     var shazamSongList: ShazamSongResponse? = null
     lateinit var shazamViewModel: ShazamViewModel
+    val TAG:String="Detail Fragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +52,7 @@ class DetailFragment : Fragment(), ServiceConnection {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e(TAG, "onViewCreated: is called  of DF")
         songList = arguments?.getParcelable("songDetail")
         songPlayingServices?.setMusicList(songList)
         setUI(songList)
@@ -59,6 +61,7 @@ class DetailFragment : Fragment(), ServiceConnection {
 
     override fun onStart() {
         super.onStart()
+        Log.e(TAG, "onStart: is called  of DF")
         var intent = Intent(requireActivity(), SongPlayingServices::class.java)
         requireActivity().bindService(intent, this@DetailFragment, Context.BIND_AUTO_CREATE)
         requireActivity().startService(intent)
@@ -66,6 +69,7 @@ class DetailFragment : Fragment(), ServiceConnection {
 
     override fun onStop() {
         super.onStop()
+        Log.e(TAG, "onPause: is called  of DF")
         requireActivity().unbindService(this@DetailFragment)
     }
 
@@ -80,9 +84,11 @@ class DetailFragment : Fragment(), ServiceConnection {
     }
 
     private fun controlSound(song: String?) {
+        Log.e(TAG, "controlSound: Media Player is called on DF", )
         try {
             val uri: Uri? = Uri.parse(song.toString())
             if (songPlayingServices!!.mp == null) {
+                Log.e(TAG, "controlSound: MP is initialized" )
                 songPlayingServices!!.mp = MediaPlayer()
                 songPlayingServices!!.mp = MediaPlayer.create(requireActivity(), uri)
                 binding.playProgressBar.visibility=View.GONE
@@ -94,11 +100,13 @@ class DetailFragment : Fragment(), ServiceConnection {
                     SongDurationFormator.formatDuration(songPlayingServices!!.mp!!.duration.toLong())
 
                 binding.play.setOnClickListener {
+                    Log.e(TAG, "controlSound: MP is started" )
                     songPlayingServices!!.mp?.start()
                     songPlayingServices!!.showNotification()
                 }
                 binding.stop.setOnClickListener {
                     if (songPlayingServices?.mp != null) {
+                        Log.e(TAG, "controlSound: MP is stop", )
                         songPlayingServices!!.mp?.stop()
                         songPlayingServices!!.mp?.release()
                         NotificationManagerCompat.from(requireContext()).cancel(122)
@@ -109,6 +117,7 @@ class DetailFragment : Fragment(), ServiceConnection {
                 }
                 binding.pause.setOnClickListener {
                     if (songPlayingServices?.mp != null) {
+                        Log.e(TAG, "controlSound: MP is pause" )
                         songPlayingServices!!.mp?.pause()
                     }
                 }
@@ -132,15 +141,18 @@ class DetailFragment : Fragment(), ServiceConnection {
 
     override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
         val binder = p1 as SongPlayingServices.MyBinder
+        Log.e(TAG, "onService Connected: is called  of DF")
         songPlayingServices = binder.currentService()
         songPlayingServices!!.notificationChannelInit()
     }
 
     override fun onServiceDisconnected(p0: ComponentName?) {
+        Log.e(TAG, "onService Disconnected: is called  of DF")
         songPlayingServices = null
     }
 
     fun shazamViewModelInit() {
+        Log.e(TAG, "shazamViewModelInit: is called in DF")
 
         val shazamSongService =
             RetrofitHelper.getInstanceOfShazamApi().create(ShazamSongService::class.java)
@@ -158,6 +170,7 @@ class DetailFragment : Fragment(), ServiceConnection {
                         Log.e("Shazam Success", it.toString())
                         songPlayingServices?.setMusicList(songList)
                         playUri = it?.tracks?.hits?.get(0)?.track?.hub?.actions?.get(1)?.uri
+                        Log.e(TAG, "shazamViewModelInit: On success API,Control sound is called")
                         controlSound(playUri)
                     }
                 }
@@ -172,8 +185,19 @@ class DetailFragment : Fragment(), ServiceConnection {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.e(TAG, "onResume: is called  of DF")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e(TAG, "onPause: is called  of DF")
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        Log.e(TAG, "onDestroy: is called  of DF", )
         NotificationManagerCompat.from(requireContext()).cancel(122)
         _binding = null
     }
