@@ -278,7 +278,11 @@ class DetailFragment : Fragment(), ServiceConnection {
         }
         binding.pause.setOnClickListener {
             Log.e(TAG, "btnControl: MP is paused")
-            pause()
+            replyFive()
+        }
+
+        binding.stop.setOnClickListener {
+            forwardFive()
         }
 
     }
@@ -309,6 +313,12 @@ class DetailFragment : Fragment(), ServiceConnection {
             }
         }
     }
+    private fun forwardFive(){
+            mediaPlayer?.seekTo((mediaPlayer!!.currentPosition+5000))
+    }
+     private fun replyFive(){
+             mediaPlayer?.seekTo((mediaPlayer!!.currentPosition-5000))
+     }
 
     override fun onDestroy() {
         super.onDestroy()
