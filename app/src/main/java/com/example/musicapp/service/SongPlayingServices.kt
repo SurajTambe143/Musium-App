@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
@@ -18,9 +19,10 @@ class SongPlayingServices : Service() {
     val TAG:String="Service"
 
     companion object {
-        val CHANNEL_ID = "1"
-        val CHANNEL_NAME = "Musium"
-        val DESCRIPTION_TEXT = "Music is playing"
+
+        var mediaPlayer: MediaPlayer? = null
+
+        var uri: Uri? = null
     }
 
     private var songList: com.example.musicapp.model_data.song_details.Hit? = null
@@ -43,15 +45,6 @@ class SongPlayingServices : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.e(TAG, "onStartCommand: is called of Service", )
-
-//        val play:String? =intent?.getStringExtra("Shazam")
-//        Log.e("Service Check", play.toString() )
-//        val uri: Uri?= Uri.parse(play.toString())
-//
-//        if (mp==null){
-//            mp = MediaPlayer.create(this,uri)
-//        }
-//        mp?.start()
         return START_NOT_STICKY
     }
 
@@ -64,6 +57,9 @@ class SongPlayingServices : Service() {
         Log.e(TAG, "showNotification: is called of Service", )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Log.e("songlist notification", songList.toString())
+            val CHANNEL_ID = "1"
+            val CHANNEL_NAME = "Musium"
+            val DESCRIPTION_TEXT = "Music is playing"
 
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val mChannel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
@@ -83,10 +79,6 @@ class SongPlayingServices : Service() {
             val nt = Notification.Builder(this)
                 .setContentTitle(songList?.result?.title)
                 .setContentText(songList?.result?.artist_names)
-
-//                .setContentTitle(songList?.tracks?.hits?.get(0)?.track?.title)
-//                .setContentText(songList?.tracks?.hits?.get(0)?.track?.subtitle)
-//                .setSmallIcon(BitmapFactory.decodeFile(detailFragment.songList?.result?.song_art_image_url).toIcon())
                 .build()
             startForeground(122, nt)
         }

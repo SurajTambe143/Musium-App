@@ -44,9 +44,13 @@ class MainActivity : AppCompatActivity() {
 
 
         setUpRecyclerViews()
-        networkMonitor = NetworkMonitor(this,binding) {
+        networkMonitor = NetworkMonitor(this,{
+            Snackbar.make(binding.clMainActivityRoot,"Network available",Snackbar.LENGTH_SHORT).show()
             mainViewModel.getSongDetails("Perfect")
-        }
+        },{
+            Snackbar.make(binding.clMainActivityRoot,"You are Offline",Snackbar.LENGTH_SHORT).show()
+            binding.shimmerViewContainer.visibility= View.GONE
+        })
         networkMonitor.resetStatus()
 
         setUpViewModelObservers()

@@ -5,12 +5,8 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import android.os.Build
-import android.view.View
-import com.example.musicapp.databinding.ActivityMainBinding
-import com.google.android.material.snackbar.Snackbar
 
-class NetworkMonitor(private val context: Context, binding: ActivityMainBinding, val online: () -> Unit) {
+class NetworkMonitor(private val context: Context,val online: () -> Unit, val offline:()->Unit) {
 
     private var currentNetworkStatus = NetworkStatus.INITIAL
     private val connectivityManager: ConnectivityManager =
@@ -24,15 +20,13 @@ class NetworkMonitor(private val context: Context, binding: ActivityMainBinding,
             if (!(currentNetworkStatus == NetworkStatus.INITIAL && networkStatus)) {
                 // Handle network available event
                 online.invoke()
-                Snackbar.make(binding.clMainActivityRoot,"Network available",Snackbar.LENGTH_SHORT).show()
                 currentNetworkStatus=NetworkStatus.ONLINE
             }
         }
 
         override fun onLost(network: Network) {
             super.onLost(network)
-            Snackbar.make(binding.clMainActivityRoot,"You are Offline",Snackbar.LENGTH_SHORT).show()
-            binding.shimmerViewContainer.visibility= View.GONE
+            offline.invoke()
             // Handle network lost event
             currentNetworkStatus=NetworkStatus.OFFLINE
         }
@@ -42,14 +36,12 @@ class NetworkMonitor(private val context: Context, binding: ActivityMainBinding,
     }
 
     fun startNetworkMonitoring() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val networkRequest = NetworkRequest.Builder()
-                .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-                .build()
+        val networkRequest = NetworkRequest.Builder()
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .build()
 
-            connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
-        }
+        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }
 
     fun stopNetworkMonitoring() {
