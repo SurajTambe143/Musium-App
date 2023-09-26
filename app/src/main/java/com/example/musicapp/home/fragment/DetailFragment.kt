@@ -65,6 +65,7 @@ class DetailFragment : Fragment(), ServiceConnection {
         super.onViewCreated(view, savedInstanceState)
         Log.e(TAG, "onViewCreated: is called  of DF")
         songList = arguments?.getParcelable("songDetail")
+        Log.e(TAG, songList.toString() )
         songPlayingServices?.setMusicList(songList)
         setUI(songList)
         shazamViewModelInit()
@@ -76,6 +77,7 @@ class DetailFragment : Fragment(), ServiceConnection {
         var intent = Intent(requireActivity(), SongPlayingServices::class.java)
         //requireActivity().bindService(intent, this@DetailFragment, Context.BIND_AUTO_CREATE)
         requireActivity().startService(intent)
+        initMediaPlayCheck()
         uiThread.launch {
             initSeekBar()
         }
@@ -98,6 +100,7 @@ class DetailFragment : Fragment(), ServiceConnection {
         binding.detailsTitle.text = songList?.result?.title
         binding.detailsArtist.text = songList?.result?.artist_names
         binding.detailsReleaseDate.text = songList?.result?.release_date_for_display
+        binding.seekBar.progress=0
     }
 
     private fun controlSound(song: String?) {
@@ -194,6 +197,7 @@ class DetailFragment : Fragment(), ServiceConnection {
                         mediaPlayerInit(playUri)
                         binding.play.setImageResource(R.drawable.round_pause_24)
                         btnControl()
+                        onCompleteMediaPlayer(playUri)
                     }
                 }
 
@@ -241,6 +245,12 @@ class DetailFragment : Fragment(), ServiceConnection {
         if (SongPlayingServices.mediaPlayer!!.isPlaying) {
             Log.e(TAG, "pause: Media Player is paused")
             SongPlayingServices.mediaPlayer!!.pause()
+        }
+    }
+    private fun initMediaPlayCheck(){
+        if (mediaPlayer!=null){
+            mediaPlayer!!.stop()
+            binding.seekBar.progress=0
         }
     }
 
@@ -319,6 +329,12 @@ class DetailFragment : Fragment(), ServiceConnection {
      private fun replyFive(){
              mediaPlayer?.seekTo((mediaPlayer!!.currentPosition-5000))
      }
+
+    private fun onCompleteMediaPlayer(playUri: String?){
+        mediaPlayer?.setOnCompletionListener {
+            mediaPlayerInit(playUri)
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()

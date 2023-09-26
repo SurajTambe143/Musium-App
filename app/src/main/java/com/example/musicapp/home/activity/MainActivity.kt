@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var networkMonitor: NetworkMonitor
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
+    private val TAG="Main Activity"
     private val songsAdapter = SongsAdapter {
         networkMonitor.resetStatus()
         val intent = Intent(this, DetailsActivity::class.java)
@@ -105,6 +106,7 @@ class MainActivity : AppCompatActivity() {
 
                 is APIResponse.Success -> {
                     it.data?.let {
+                        Log.w(TAG,it.toString() )
                         songsAdapter.updateList(it.hits)
                         binding.shimmerViewContainer.visibility = View.GONE
                     }

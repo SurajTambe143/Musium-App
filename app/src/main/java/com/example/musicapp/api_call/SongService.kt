@@ -1,5 +1,6 @@
 package com.example.musicapp.api_call
 
+import com.example.musicapp.BuildConfig
 import com.example.musicapp.model_data.lyrics.LyricsResponse
 import com.example.musicapp.model_data.song_details.DetailsResponse
 import retrofit2.Response
@@ -10,7 +11,7 @@ import retrofit2.http.Query
 interface SongService {
 
     @Headers(
-        "X-RapidAPI-Key: bcb30a9572mshc2b47de90799a6bp19761djsn2b7a8caffbdd",
+        "X-RapidAPI-Key: ${BuildConfig.API_KEY}",
         "X-RapidAPI-Host: genius-song-lyrics1.p.rapidapi.com"
     )
     @GET("search/")
