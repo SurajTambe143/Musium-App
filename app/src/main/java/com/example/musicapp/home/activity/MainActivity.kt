@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var networkMonitor: NetworkMonitor
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
+    private val TAG="Main Activity"
     private val songsAdapter = SongsAdapter {
         networkMonitor.resetStatus()
         val intent = Intent(this, DetailsActivity::class.java)
@@ -42,7 +43,16 @@ class MainActivity : AppCompatActivity() {
         //Tool Bar
         setSupportActionBar(binding.myToolbar)
 
+
         setUpRecyclerViews()
+        networkMonitor = NetworkMonitor(this,{
+            Snackbar.make(binding.clMainActivityRoot,"Network available",Snackbar.LENGTH_SHORT).show()
+            mainViewModel.getSongDetails("Perfect")
+        },{
+            Snackbar.make(binding.clMainActivityRoot,"You are Offline",Snackbar.LENGTH_SHORT).show()
+            binding.shimmerViewContainer.visibility= View.GONE
+        })
+        networkMonitor.resetStatus()
 
         setUpViewModelObservers()
 
@@ -86,9 +96,6 @@ class MainActivity : AppCompatActivity() {
         mainViewModel =
             ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
 
-        networkMonitor = NetworkMonitor(this) {
-            mainViewModel.getSongDetails("Perfect")
-        }
 
         mainViewModel.songs.observe(this, Observer {
 
@@ -99,6 +106,7 @@ class MainActivity : AppCompatActivity() {
 
                 is APIResponse.Success -> {
                     it.data?.let {
+                        Log.w(TAG,it.toString() )
                         songsAdapter.updateList(it.hits)
                         binding.shimmerViewContainer.visibility = View.GONE
                     }
@@ -138,7 +146,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("ex", "onQueryTextSubmit: $query")
                 val ex = query.toString()
                 if (ex == "") {
-                    Snackbar.make(rootView, "Please enter something", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(binding.clMainActivityRoot, "Please enter something", Snackbar.LENGTH_LONG).show()
                 } else {
                     mainViewModel.getSongDetails(ex)
                 }

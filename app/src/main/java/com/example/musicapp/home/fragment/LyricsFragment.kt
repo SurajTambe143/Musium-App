@@ -16,6 +16,7 @@ import com.example.musicapp.repository.APIResponse
 import com.example.musicapp.repository.SongRepository
 import com.example.musicapp.viewmodel.MainViewModel
 import com.example.musicapp.viewmodel.MainViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 
 class LyricsFragment : Fragment() {
     lateinit var mainViewModel: MainViewModel
@@ -70,7 +71,7 @@ class LyricsFragment : Fragment() {
 
                 is APIResponse.Error -> {
                     it.errorMessage.let {
-                        Log.e("Check lyrics", it.toString() )
+                        Snackbar.make(binding.root,it.toString(),Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }

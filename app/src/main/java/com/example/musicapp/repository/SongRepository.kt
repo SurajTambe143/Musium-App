@@ -37,7 +37,7 @@ class SongRepository(private val songService: SongService, val context: Context)
             if (result.body() != null) {
                 lyricLiveData.postValue(APIResponse.Success(result.body()))
             }else{
-                songLiveData.postValue(APIResponse.Error("Error occurred while fetching lyrics"))
+                lyricLiveData.postValue(APIResponse.Error("Error occurred while fetching lyrics"))
             }
 
         }
