@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
+    // Add the Crashlytics Gradle plugin
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -56,4 +59,14 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime:$lifecycle_version")
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
+    // Import the Firebase BoM
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+
+    // Add the dependencies for the Remote Config and Analytics libraries
+    implementation("com.google.firebase:firebase-config")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-messaging")
 }

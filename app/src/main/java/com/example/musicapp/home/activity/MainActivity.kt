@@ -16,13 +16,27 @@ import com.example.musicapp.api_call.SongService
 import com.example.musicapp.databinding.ActivityMainBinding
 import com.example.musicapp.repository.APIResponse
 import com.example.musicapp.repository.SongRepository
+import com.example.musicapp.utility.DayNightModeHelper
 import com.example.musicapp.utility.NetworkMonitor
+import com.example.musicapp.utility.logEvent
 import com.example.musicapp.viewmodel.MainViewModel
 import com.example.musicapp.viewmodel.MainViewModelFactory
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Firebase
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.analytics
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.remoteconfig.ConfigUpdate
+import com.google.firebase.remoteconfig.ConfigUpdateListener
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigException
+import com.google.firebase.remoteconfig.remoteConfig
+import com.google.firebase.remoteconfig.remoteConfigSettings
 
 class MainActivity : AppCompatActivity() {
     lateinit var rootView: View
+    private lateinit var analytics: FirebaseAnalytics
     lateinit var mainViewModel: MainViewModel
     private lateinit var networkMonitor: NetworkMonitor
     private var _binding: ActivityMainBinding? = null
@@ -33,11 +47,13 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("songDetail", it)
         startActivity(intent)
     }
+    private val TAG = "MainActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        analytics = Firebase.analytics
 
         //Tool Bar
         setSupportActionBar(binding.myToolbar)
@@ -69,6 +85,58 @@ class MainActivity : AppCompatActivity() {
 //        }
 //        )
 
+        remoteConfig()
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                Log.d(TAG, "Unique Token for the device is $token")
+            }
+            else {
+                return@OnCompleteListener
+            }
+        })
+
+    }
+
+    private fun remoteConfig() {
+        val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
+        val configSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 0
+        }
+        remoteConfig.setConfigSettingsAsync(configSettings)
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
+        remoteConfig.fetchAndActivate()
+            .addOnCompleteListener { task->
+                if (task.isSuccessful){
+                    val update= task.result
+                    Log.e(TAG, "remoteConfig:*********** $update " )
+                    setDarkNightMode()
+                }
+                else Log.e(TAG, "remoteConfig: FAALEE***********  " )
+
+            }
+        remoteConfig.addOnConfigUpdateListener(object : ConfigUpdateListener {
+            override fun onUpdate(configUpdate: ConfigUpdate) {
+                Log.e(TAG, "Updated keys: " + configUpdate.updatedKeys)
+
+                if (configUpdate.updatedKeys.contains("android_update_mode")) {
+                    remoteConfig.activate().addOnCompleteListener {
+                        Log.e(TAG, "Updated keys inside if condition : ${it.toString()}")
+                    }
+                }
+            }
+
+            override fun onError(error: FirebaseRemoteConfigException) {
+                Log.w(TAG, "Config update error with code: " + error.code, error)
+            }
+        })
+    }
+
+    private fun setDarkNightMode() {
+        val mode = FirebaseRemoteConfig.getInstance().getString("mode")
+        if (mode=="dark") DayNightModeHelper.setNightMode(this) else DayNightModeHelper.setDayMode(this)
+        Log.e(TAG, "remoteConfig Mode:*********** $mode " )
     }
 
     private fun setUpRecyclerViews() {
@@ -82,6 +150,10 @@ class MainActivity : AppCompatActivity() {
         //Retrofit Instance
         val songService = RetrofitHelper.getInstance().create(SongService::class.java)
         val repository = SongRepository(songService, applicationContext)
+
+        val bundle = Bundle()
+        bundle.putString("UserName", "Suraj Tambe")
+        logEvent(this, "MainActivity", bundle);
 
         mainViewModel =
             ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)

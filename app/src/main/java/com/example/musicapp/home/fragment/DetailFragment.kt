@@ -27,6 +27,7 @@ import com.example.musicapp.repository.APIResponse
 import com.example.musicapp.repository.ShazamSongRepository
 import com.example.musicapp.service.SongPlayingServices
 import com.example.musicapp.utility.SongDurationFormator
+import com.example.musicapp.utility.logEvent
 import com.example.musicapp.viewmodel.ShazamViewModel
 import com.example.musicapp.viewmodel.ShazamViewModelFactory
 
@@ -54,6 +55,10 @@ class DetailFragment : Fragment(), ServiceConnection {
         songPlayingServices?.setMusicList(songList)
         setUI(songList)
         shazamViewModelInit()
+
+        val bundle = Bundle()
+        bundle.putString("UserName", "Suraj Tambe")
+        logEvent(requireContext(), "DetailsFragment", bundle);
     }
 
     override fun onStart() {

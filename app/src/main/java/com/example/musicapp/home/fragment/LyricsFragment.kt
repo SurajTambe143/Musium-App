@@ -14,6 +14,7 @@ import com.example.musicapp.databinding.FragmentLyricsBinding
 import com.example.musicapp.model_data.song_details.Hit
 import com.example.musicapp.repository.APIResponse
 import com.example.musicapp.repository.SongRepository
+import com.example.musicapp.utility.logEvent
 import com.example.musicapp.viewmodel.MainViewModel
 import com.example.musicapp.viewmodel.MainViewModelFactory
 
@@ -39,6 +40,10 @@ class LyricsFragment : Fragment() {
         val songId: Int? = lyric?.result?.id
 
         setUpViewModelObserver(songId)
+
+        val bundle = Bundle()
+        bundle.putString("UserName", "Suraj Tambe")
+        logEvent(requireContext(), "LyricsFragment", bundle);
 
     }
 

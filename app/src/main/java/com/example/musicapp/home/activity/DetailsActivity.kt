@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.musicapp.adapter.ViewPagerAdapter
 import com.example.musicapp.databinding.ActivityDetailsBinding
 import com.example.musicapp.model_data.song_details.Hit
+import com.example.musicapp.utility.logEvent
 import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailsActivity : AppCompatActivity() {
@@ -19,6 +20,10 @@ class DetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
         song = intent.getParcelableExtra("songDetail")
         viewPagerAdapter()
+
+        val bundle = Bundle()
+        bundle.putString("UserName", "Suraj Tambe")
+        logEvent(this, "DetailsActivity", bundle);
 
     }
 
