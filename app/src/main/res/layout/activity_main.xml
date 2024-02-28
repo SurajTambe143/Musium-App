@@ -5,65 +5,7 @@
     android:id="@+id/cl_main_activity_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.activity.MainActivity">
-
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:id="@+id/input_layout"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:endIconMode="clear_text"-->
-<!--        app:startIconContentDescription="@string/search_content"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/search_btn"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/rv_container"-->
-<!--        android:layout_marginTop="5dp"-->
-<!--        android:layout_marginStart="5dp"-->
-<!--        android:layout_marginEnd="5dp"-->
-<!--        >-->
-<!--        <com.google.android.material.textfield.TextInputEditText-->
-<!--            android:id="@+id/input_song"-->
-<!--            android:hint="@string/input_description"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:imeOptions="actionDone"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:inputType="text"-->
-<!--            />-->
-
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--    <com.google.android.material.button.MaterialButton-->
-<!--        style="@style/Widget.Material3.Button.ElevatedButton"-->
-<!--        android:id="@+id/search_btn"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:text="@string/search_btn"-->
-<!--        android:layout_marginTop="5dp"-->
-<!--        app:cornerRadius="10dp"-->
-<!--        app:layout_constraintStart_toEndOf="@id/input_layout"-->
-<!--        app:layout_constraintTop_toTopOf="@id/input_layout"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/input_layout"/>-->
-
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/rv_container"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
-
-<!--    <ProgressBar-->
-<!--        android:id="@+id/progressbar_main"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:visibility="visible"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
+    tools:context=".presentation.home.activity.MainActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout_container"

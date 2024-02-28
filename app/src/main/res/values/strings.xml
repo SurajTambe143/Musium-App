@@ -11,4 +11,7 @@
     <string name="hello_lyrics_fragment">Lyrics Fragment</string>
     <string name="hello_Detail_fragment">Details Fragment</string>
     <string name="action_search">Search</string>
+    <string name="title_podcasts">Podcasts</string>
+    <string name="title_search">Search</string>
+    <string name="title_home">Home</string>
 </resources>

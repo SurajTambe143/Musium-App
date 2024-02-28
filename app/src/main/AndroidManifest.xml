@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -19,16 +19,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".home.activity.DetailsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".home.LyricsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".home.DetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".home.activity.MainActivity"
+            android:name=".presentation.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +27,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".service.SongPlayingServices"/>
+        <activity
+            android:name=".presentation.home.activity.DetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.home.LyricsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.home.DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.home.activity.MainActivity"
+            android:exported="false">
+        </activity>
+
+        <service android:name=".service.SongPlayingServices" />
     </application>
 
 </manifest>

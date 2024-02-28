@@ -5,9 +5,9 @@
     android:id="@+id/cl_detailfragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.fragment.DetailFragment">
+    tools:context=".presentation.home.fragment.DetailFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -15,17 +15,6 @@
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <!--            <com.google.android.material.card.MaterialCardView-->
-            <!--                android:id="@+id/cv_layout"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="400dp"-->
-            <!--                android:layout_marginStart="10dp"-->
-            <!--                android:layout_marginTop="10dp"-->
-            <!--                android:layout_marginEnd="10dp"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toTopOf="parent">-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cv_layout"
@@ -62,82 +51,6 @@
                     app:shapeAppearanceOverlay="@style/corner_radius"
                     tools:src="@mipmap/ic_launcher" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!--            </com.google.android.material.card.MaterialCardView>-->
-            <!--            <com.google.android.material.card.MaterialCardView-->
-            <!--                android:id="@+id/cv_layout_artist"-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="200dp"-->
-            <!--                android:layout_marginTop="15dp"-->
-            <!--                android:layout_marginStart="20dp"-->
-            <!--                android:layout_marginEnd="20dp"-->
-            <!--                app:cardCornerRadius="30dp"-->
-            <!--                app:cardBackgroundColor="@color/light_bg"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintTop_toBottomOf="@id/cv_layout">-->
-
-            <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="match_parent">-->
-
-            <!--                    <TextView-->
-            <!--                        android:id="@+id/details_title"-->
-            <!--                        android:layout_width="match_parent"-->
-            <!--                        android:layout_height="wrap_content"-->
-            <!--                        android:layout_marginTop="1dp"-->
-            <!--                        android:gravity="center_horizontal"-->
-            <!--                        tools:text="@string/app_name"-->
-            <!--                        android:textSize="30sp"-->
-            <!--                        android:maxLines="1"-->
-            <!--                        app:layout_constraintBottom_toTopOf="@id/details_artist_image"-->
-            <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                        app:layout_constraintStart_toStartOf="parent"-->
-            <!--                        app:layout_constraintTop_toTopOf="parent"-->
-            <!--                        />-->
-
-            <!--                    <TextView-->
-            <!--                        android:id="@+id/details_artist"-->
-            <!--                        android:layout_width="0dp"-->
-            <!--                        android:layout_height="0dp"-->
-            <!--                        android:gravity="center"-->
-            <!--                        android:paddingStart="10dp"-->
-            <!--                        tools:text="@string/app_name"-->
-            <!--                        android:textSize="20sp"-->
-            <!--                        app:layout_constraintBottom_toBottomOf="@id/details_artist_image"-->
-            <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                        app:layout_constraintStart_toEndOf="@id/details_artist_image"-->
-            <!--                        app:layout_constraintTop_toBottomOf="@id/singer" />-->
-
-            <!--                    <com.google.android.material.imageview.ShapeableImageView-->
-            <!--                        android:id="@+id/details_artist_image"-->
-            <!--                        android:layout_width="130dp"-->
-            <!--                        android:layout_height="130dp"-->
-            <!--                        android:layout_marginStart="20dp"-->
-            <!--                        android:layout_marginEnd="10dp"-->
-            <!--                        android:scaleType="fitXY"-->
-            <!--                        tools:src="@mipmap/ic_launcher"-->
-            <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                        app:layout_constraintEnd_toStartOf="@id/details_artist"-->
-            <!--                        app:layout_constraintStart_toStartOf="parent"-->
-            <!--                        app:layout_constraintTop_toBottomOf="@id/details_title"-->
-            <!--                        app:shapeAppearanceOverlay="@style/corner_radius" />-->
-
-            <!--                    <TextView-->
-            <!--                        android:id="@+id/singer"-->
-            <!--                        android:layout_width="0dp"-->
-            <!--                        android:layout_height="30dp"-->
-            <!--                        android:gravity="center_horizontal"-->
-            <!--                        android:text="@string/singer"-->
-            <!--                        android:textSize="25sp"-->
-            <!--                        app:layout_constraintBottom_toTopOf="@id/details_artist"-->
-            <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                        app:layout_constraintStart_toEndOf="@id/details_artist_image"-->
-            <!--                        app:layout_constraintTop_toTopOf="@id/details_artist_image" />-->
-
-            <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-            <!--            </com.google.android.material.card.MaterialCardView>-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_play_container"
@@ -308,20 +221,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--        <com.google.android.material.card.MaterialCardView-->
-            <!--            android:id="@+id/cv_layout_release_date"-->
-            <!--            android:layout_width="0dp"-->
-            <!--            android:layout_height="70dp"-->
-            <!--            android:layout_marginStart="50dp"-->
-            <!--            android:layout_marginTop="10dp"-->
-            <!--            android:layout_marginEnd="50dp"-->
-            <!--            android:backgroundTint="@color/light_bg"-->
-            <!--            app:cardCornerRadius="30dp"-->
-            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--            app:layout_constraintStart_toStartOf="parent"-->
-            <!--            app:layout_constraintTop_toBottomOf="@id/cl_play_container">-->
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cv_layout_release_date"
                 android:layout_width="0dp"
@@ -331,7 +230,7 @@
                 android:layout_marginEnd="50dp"
                 android:backgroundTint="@color/light_bg"
                 app:cardCornerRadius="30dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/lyrics_layout_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_play_container">
@@ -363,8 +262,19 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--        </com.google.android.material.card.MaterialCardView>-->
+            <include
+                android:id="@+id/lyrics_layout_tv"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                app:layout_constraintTop_toBottomOf="@id/cv_layout_release_date"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="20dp"
+                layout="@layout/lyrics_item"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>

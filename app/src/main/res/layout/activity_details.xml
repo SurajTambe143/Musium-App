@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/cl_detailsActivity_root"
-    tools:context=".home.activity.DetailsActivity">
+    tools:context=".presentation.home.activity.DetailsActivity">
 
     <LinearLayout
         app:layout_constraintTop_toTopOf="parent"

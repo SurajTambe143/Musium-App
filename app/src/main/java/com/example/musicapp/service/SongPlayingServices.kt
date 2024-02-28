@@ -25,9 +25,9 @@ class SongPlayingServices : Service() {
         var uri: Uri? = null
     }
 
-    private var songList: com.example.musicapp.model_data.song_details.Hit? = null
+    private var songList: com.example.musicapp.domain.model_data.song_details.Hit? = null
 
-    fun setMusicList(data : com.example.musicapp.model_data.song_details.Hit?) {
+    fun setMusicList(data : com.example.musicapp.domain.model_data.song_details.Hit?) {
         Log.e("Service list :setMusicList method", data.toString() )
         songList = data
     }
@@ -87,7 +87,5 @@ class SongPlayingServices : Service() {
     override fun onDestroy() {
         Log.e(TAG, "onDestroy: is called of Service", )
         stopSelf()
-//        Log.e("S", "onDestroy:")
-//        mp?.stop()
     }
 }
